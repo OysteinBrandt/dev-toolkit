@@ -25,7 +25,7 @@
 /*
     ::name_of_algo
         Intention/Description
-            
+
 
         Prerequisite
 
@@ -42,11 +42,11 @@
         Complexity
 
         Exceptions
-        
+
         Example
 
     TODO:
-        
+
     ALTERNATIVE NAMES:
 
 */
@@ -66,11 +66,13 @@ void remove_leading(Container &c, T val)
 
 /*********************************************************************************/
 
+#if 0
 template <typename Container, typename Predicate>
 void remove_leading_if(Container &c, Predicate p)
 {
-    //c.erase(c.begin(), std::find_if(c.begin(), c.end(), std::not_fn(p)));
+    c.erase(c.begin(), std::find_if(c.begin(), c.end(), std::not_fn(p)));
 }
+#endif
 
 /*********************************************************************************/
 
