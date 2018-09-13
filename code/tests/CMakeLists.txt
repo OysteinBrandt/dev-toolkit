@@ -1,20 +1,20 @@
-# move project command to top level?
-#project(Tests)
+project( Tests CXX )
 
-include_directories("${PROJECT_SOURCE_DIR}/algorithm")
-#include_directories("${PROJECT_SOURCE_DIR}/tests/test-api")
-find_package(Catch2 REQUIRED)
+include_directories( "${PROJECT_SOURCE_DIR}/../" )
 
-if (MSVC)
-	add_compile_options(/W4)
-else()
-	add_compile_options(-Wall -Wextra -Wpedantic)
+add_executable( tests main.cpp algorithm/remove_leading_test.cpp test-api/catch.hpp )
+
+if ( CMAKE_CXX_COMPILER_ID MATCHES "Clang|AppleClang|GNU" )
+		target_compile_options( tests  PRIVATE -Wall -Wextra -Wunreachable-code )
+endif()
+if ( CMAKE_CXX_COMPILER_ID MATCHES "Clang" )
+		target_compile_options( tests  PRIVATE -Wweak-vtables -Wexit-time-destructors -Wglobal-constructors -Wmissing-noreturn )
+endif()
+if ( CMAKE_CXX_COMPILER_ID MATCHES "MSVC" )
+		target_compile_options( tests  PRIVATE /W4 /w44265 /WX )
 endif()
 
-add_executable(tests main.cpp)
-target_link_libraries(tests Catch2::Catch2)
-
-target_compile_features(tests
+target_compile_features( tests
 	PRIVATE
 		cxx_lambdas
 		cxx_range_for
