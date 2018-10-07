@@ -1,14 +1,24 @@
 project( Tests CXX )
 
-set( HEADER_FILES 
-	${ROOT_DIR}/algorithm/remove_leading.hpp
+add_executable( tests main.cpp )
+
+# TEST API
+target_sources( tests
+	PRIVATE
+		${CMAKE_CURRENT_LIST_DIR}/test-api/catch.hpp
 )
 
-set( SOURCE_FILES 
-	algorithm/remove_leading_test.cpp
+# HEADER_FILES
+target_sources( tests
+	PRIVATE
+		${ROOT_DIR}/algorithm/remove_leading.hpp
 )
 
-add_executable( tests main.cpp ${SOURCE_FILES} ${HEADER_FILES} test-api/catch.hpp )
+# SOURCE_FILES
+target_sources( tests
+	PRIVATE
+		${CMAKE_CURRENT_LIST_DIR}/algorithm/remove_leading_test.cpp
+)
 
 target_include_directories( tests PRIVATE ${ROOT_DIR} )
 
