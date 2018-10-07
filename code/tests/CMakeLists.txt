@@ -1,8 +1,16 @@
 project( Tests CXX )
 
-include_directories( "${PROJECT_SOURCE_DIR}/../" )
+set( HEADER_FILES 
+	${ROOT_DIR}/algorithm/remove_leading.hpp
+)
 
-add_executable( tests main.cpp algorithm/remove_leading_test.cpp test-api/catch.hpp )
+set( SOURCE_FILES 
+	algorithm/remove_leading_test.cpp
+)
+
+add_executable( tests main.cpp ${SOURCE_FILES} ${HEADER_FILES} test-api/catch.hpp )
+
+target_include_directories( tests PRIVATE ${ROOT_DIR} )
 
 if ( CMAKE_CXX_COMPILER_ID MATCHES "Clang|AppleClang|GNU" )
 		target_compile_options( tests  PRIVATE -Wall -Wextra -Wunreachable-code )
@@ -18,4 +26,4 @@ target_compile_features( tests
 	PRIVATE
 		cxx_lambdas
 		cxx_range_for
-	)
+)
