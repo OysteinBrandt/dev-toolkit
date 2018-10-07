@@ -21,6 +21,7 @@ target_sources( tests
 )
 
 target_include_directories( tests PRIVATE ${ROOT_DIR} )
+target_include_directories( tests PRIVATE ${CMAKE_CURRENT_LIST_DIR}/test-api/ )
 
 if ( CMAKE_CXX_COMPILER_ID MATCHES "Clang|AppleClang|GNU" )
 		target_compile_options( tests  PRIVATE -Wall -Wextra -Wunreachable-code )

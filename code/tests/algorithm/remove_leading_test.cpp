@@ -1,4 +1,4 @@
-#include "tests/test-api/catch.hpp"
+#include "catch.hpp"
 
 #include "algorithm/remove_leading.hpp"
 
