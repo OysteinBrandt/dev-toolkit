@@ -9,6 +9,7 @@
         Parameters
             first -
             last -
+            size - 
 
             Type requirements
 
@@ -42,6 +43,8 @@
                 while (std::prev_permutation(v.begin(), v.end()));
         - Find alternative name for combinations size variable
         - Hide implementation of combination_generator
+        - Extend to support combinations AND permutations ?
+          * see https://stattrek.com/online-calculator/combinations-permutations.aspx
 
         - need for ?
             //typedef typename std::iterator_traits<iterator_type>::value_type element_type;
@@ -73,10 +76,8 @@ public:
         : first(first), last(last) , size(size)
     {
         bitmask.resize(std::distance(first, last), false);
-        #if 0   // Assert error or exception ?
         if (size > bitmask.size())
-            throw std::out_of_range("Can not select more elements than exist for combination!");
-        #endif
+            throw std::out_of_range("Combination size is too large!");
         std::fill(bitmask.begin(), bitmask.begin() + size, true);
     }
 
@@ -104,9 +105,9 @@ combination_generator<iterator_type> make_combination_generator(iterator_type fi
 /*********************************************************************************/
 
 template<typename Container>
-combination_generator<typename Container::iterator> make_combination_generator(Container& c, size_t size)
+combination_generator<typename Container::const_iterator> make_combination_generator(const Container& c, size_t size)
 {
-    return make_combination_generator<typename Container::iterator>(c.begin(), c.end(), size);
+    return make_combination_generator<typename Container::const_iterator>(c.cbegin(), c.cend(), size);
 }
 
 /*********************************************************************************/
