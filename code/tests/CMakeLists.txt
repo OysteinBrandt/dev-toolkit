@@ -11,12 +11,14 @@ target_sources( tests
 # HEADER_FILES
 target_sources( tests
 	PRIVATE
+		${ROOT_DIR}/algorithm/combination.hpp
 		${ROOT_DIR}/algorithm/remove_leading.hpp
 )
 
 # SOURCE_FILES
 target_sources( tests
 	PRIVATE
+		${CMAKE_CURRENT_LIST_DIR}/algorithm/combination_test.cpp
 		${CMAKE_CURRENT_LIST_DIR}/algorithm/remove_leading_test.cpp
 )
 
