@@ -27,10 +27,10 @@
         - Add parameter for deciding direction of combined elements
             Invert bool check in if statement
                 Ie.
-                if (bitmask[i])
+                if (m_bitmask[i])
 
                 VS
-                if (!bitmask[i])
+                if (!m_bitmask[i])
 
             Another possibility
                 Ie.
@@ -67,47 +67,47 @@ namespace obr
 template<class iterator_type>
 class combination_generator
 {
-    iterator_type first, last;
-    std::vector<bool> bitmask;
-    size_t size;
+    iterator_type m_first;
+    std::vector<bool> m_bitmask;
 
 public:
-    explicit combination_generator(iterator_type first, iterator_type last, size_t size) 
-        : first(first), last(last) , size(size)
+    explicit combination_generator(iterator_type first, iterator_type last, size_t combination_size)
+        : m_first(first)
     {
-        bitmask.resize(std::distance(first, last), false);
-        if (size > bitmask.size())
+        m_bitmask.resize(std::distance(first, last), false);
+        if (combination_size > m_bitmask.size())
             throw std::out_of_range("Combination size is too large!");
-        std::fill(bitmask.begin(), bitmask.begin() + size, true);
+        std::fill(m_bitmask.begin(), m_bitmask.begin() + combination_size, true);
     }
 
     template<class output_iterator>
     bool operator()(output_iterator output) 
     {
-        iterator_type element = first;
-        for (size_t i = 0; i < bitmask.size(); ++i, ++element) 
+        iterator_type element = m_first;
+        for (auto bit : m_bitmask)
         {
-            if (bitmask[i])
-                *output++ = *element;
+          if (bit)
+            *output++ = *element;
+          ++element;
         }
-        return std::prev_permutation(bitmask.begin(), bitmask.end());
+        return std::prev_permutation(m_bitmask.begin(), m_bitmask.end());
     }
 };
 
 /*********************************************************************************/
 
 template<class iterator_type>
-combination_generator<iterator_type> make_combination_generator(iterator_type first, iterator_type last, size_t size)
+combination_generator<iterator_type> make_combination_generator(iterator_type first, iterator_type last, size_t combination_size)
 {
-    return combination_generator<iterator_type>(first, last, size);
+    return combination_generator<iterator_type>(first, last, combination_size);
 }
 
 /*********************************************************************************/
 
 template<typename Container>
-combination_generator<typename Container::const_iterator> make_combination_generator(const Container& c, size_t size)
+combination_generator<typename Container::const_iterator> make_combination_generator(const Container& c, size_t combination_size)
 {
-    return make_combination_generator<typename Container::const_iterator>(c.cbegin(), c.cend(), size);
+    return make_combination_generator<typename Container::const_iterator>(c.cbegin(), c.cend(), combination_size);
 }
 
 /*********************************************************************************/
