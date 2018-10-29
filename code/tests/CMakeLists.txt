@@ -37,6 +37,5 @@ endif()
 
 target_compile_features( tests
 	PRIVATE
-		cxx_lambdas
-		cxx_range_for
+		cxx_std_17
 )
