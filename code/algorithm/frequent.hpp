@@ -28,16 +28,20 @@
             Find element that appears most frequently in the range [first, last)
 
         Prerequisite
-            A sorted collection
+            A sorted collection, either direction.
+              Equivalent elements must appear next to each other.
 
         Parameters
             first -
             last -
 
-            Type requirements
+        Type requirements
+          Itr must meed the requirements of ForwardIterator
 
         Return value
             X_Iterator to found element
+              end() if the range is empty
+              first() if all elements appear equal amount of times
 
         Notes
 
@@ -58,6 +62,8 @@
             std::cout << "the most frequent number is " << *r << "\n";
 
     TODO:
+        - Return pair of most_frequent and number of occurrences
+        - Add function for least_frequent
         - Add parameter for using a predicate to compare elements
         - Check edge cases, (e.g. if empty, all occur once)
         - Indicate type of iterator in template (ForwardIt, InputIt, etc.)
@@ -67,7 +73,7 @@
     ALTERNATIVE NAMES:
         - repeated ++
         - recurring +
-        - common
+        - most_common
         - repetitive --
 */
 
@@ -79,23 +85,24 @@ namespace alg
 /*********************************************************************************/
 
 template <typename Itr>
-Itr most_frequent(Itr first, Itr last)
+Itr most_frequent(Itr first, Itr last) noexcept
 {
+    static_assert(std::is_base_of_v<std::forward_iterator_tag, typename std::iterator_traits<Itr>::iterator_category>, "most_frequent requires forward iterator");
     auto most_freq = first;
-    unsigned largest_occurence{0};
+    unsigned largest_occurrence{0};
 
     for (; first != last; ++first)
     {
-        unsigned occurence{1};
+        unsigned occurrence{1};
         while (std::next(first) != last && *std::next(first) == *first)
         {
-            ++occurence;
+            ++occurrence;
             std::advance(first, 1);
         }
 
-        if (occurence > largest_occurence)
+        if (occurrence > largest_occurrence)
         {
-            largest_occurence = occurence;
+            largest_occurrence = occurrence;
             most_freq = first;
         }
     }
@@ -106,7 +113,15 @@ Itr most_frequent(Itr first, Itr last)
 /*********************************************************************************/
 
 template <typename Collection>
-typename Collection::iterator most_frequent(Collection &c)
+typename Collection::const_iterator most_frequent(const Collection &c) noexcept
+{
+    return most_frequent(c.cbegin(), c.cend());
+}
+
+/*********************************************************************************/
+
+template <typename Collection>
+typename Collection::iterator most_frequent(Collection &c) noexcept
 {
     return most_frequent(c.begin(), c.end());
 }
