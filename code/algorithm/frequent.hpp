@@ -65,10 +65,6 @@
         - Return pair of most_frequent and number of occurrences
         - Add function for least_frequent
         - Add parameter for using a predicate to compare elements
-        - Check edge cases, (e.g. if empty, all occur once)
-        - Indicate type of iterator in template (ForwardIt, InputIt, etc.)
-        - Support const iterators
-        - Support const collection
         
     ALTERNATIVE NAMES:
         - repeated ++
