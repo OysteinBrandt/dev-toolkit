@@ -82,50 +82,77 @@
 namespace alg
 {
 
-/*********************************************************************************/
+  /*********************************************************************************/
 
-template <typename Itr>
-Itr most_frequent(Itr first, Itr last) noexcept
-{
+  template <typename Itr>
+  Itr most_frequent(Itr first, Itr last) noexcept
+  {
     static_assert(std::is_base_of_v<std::forward_iterator_tag, typename std::iterator_traits<Itr>::iterator_category>, "most_frequent requires forward iterator");
     auto most_freq = first;
-    unsigned largest_occurrence{0};
+    unsigned largest_frequency{ 0 };
 
-    for (; first != last; ++first)
+    while (first != last)
     {
-        unsigned occurrence{1};
-        while (std::next(first) != last && *std::next(first) == *first)
-        {
-            ++occurrence;
-            std::advance(first, 1);
-        }
+      unsigned frequency{ 1 };
+      Itr trailer = first;
+      ++first;
 
-        if (occurrence > largest_occurrence)
-        {
-            largest_occurrence = occurrence;
-            most_freq = first;
-        }
+      for (; first != last && *first == *trailer; ++first, ++trailer, ++frequency) {}
+
+      if (frequency > largest_frequency)
+      {
+        largest_frequency = frequency;
+        most_freq = trailer;
+      }
     }
 
     return most_freq;
-}
+  }
 
-/*********************************************************************************/
+  /*********************************************************************************/
 
-template <typename Collection>
-typename Collection::const_iterator most_frequent(const Collection &c) noexcept
-{
+  template <typename Collection>
+  typename Collection::const_iterator most_frequent(const Collection &c) noexcept
+  {
     return most_frequent(c.cbegin(), c.cend());
-}
+  }
 
-/*********************************************************************************/
+  /*********************************************************************************/
 
-template <typename Collection>
-typename Collection::iterator most_frequent(Collection &c) noexcept
-{
+  template <typename Collection>
+  typename Collection::iterator most_frequent(Collection &c) noexcept
+  {
     return most_frequent(c.begin(), c.end());
+  }
+
+  /*********************************************************************************/
+
 }
 
-/*********************************************************************************/
+#if 0 // Alternative solution that turns out to be slightly faster on arrays in O3, but is approx. 2x slower in debug
+template <typename Itr>
+Itr most_frequent(Itr first, Itr last) noexcept
+{
+  static_assert(std::is_base_of_v<std::forward_iterator_tag, typename std::iterator_traits<Itr>::iterator_category>, "most_frequent requires forward iterator");
+  auto most_freq = first;
+  unsigned largest_frequency{ 0 };
 
+  for (; first != last; ++first)
+  {
+    unsigned frequency{ 1 };
+    while (std::next(first) != last && *std::next(first) == *first)
+    {
+      ++frequency;
+      std::advance(first, 1);
+    }
+
+    if (frequency > largest_frequency)
+    {
+      largest_frequency = frequency;
+      most_freq = first;
+    }
+  }
+
+  return most_freq;
 }
+#endif
