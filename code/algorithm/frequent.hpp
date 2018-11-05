@@ -81,7 +81,7 @@ namespace alg
   /*********************************************************************************/
 
   template <typename Itr>
-  Itr most_frequent(Itr first, Itr last) noexcept
+  Itr most_frequent(Itr first, Itr last)
   {
     static_assert(std::is_base_of_v<std::forward_iterator_tag, typename std::iterator_traits<Itr>::iterator_category>, "most_frequent requires forward iterator");
     auto most_freq = first;
@@ -108,7 +108,7 @@ namespace alg
   /*********************************************************************************/
 
   template <typename Collection>
-  typename Collection::const_iterator most_frequent(const Collection &c) noexcept
+  typename Collection::const_iterator most_frequent(const Collection &c)
   {
     return most_frequent(c.cbegin(), c.cend());
   }
@@ -116,7 +116,7 @@ namespace alg
   /*********************************************************************************/
 
   template <typename Collection>
-  typename Collection::iterator most_frequent(Collection &c) noexcept
+  typename Collection::iterator most_frequent(Collection &c)
   {
     return most_frequent(c.begin(), c.end());
   }
@@ -127,7 +127,7 @@ namespace alg
 
 #if 0 // Alternative solution that turns out to be slightly faster on arrays in O3, but is approx. 2x slower in debug
 template <typename Itr>
-Itr most_frequent(Itr first, Itr last) noexcept
+Itr most_frequent(Itr first, Itr last)
 {
   static_assert(std::is_base_of_v<std::forward_iterator_tag, typename std::iterator_traits<Itr>::iterator_category>, "most_frequent requires forward iterator");
   auto most_freq = first;
