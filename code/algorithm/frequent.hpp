@@ -30,6 +30,7 @@
         Prerequisite
             A sorted collection, either direction.
               Equivalent elements must appear next to each other.
+              Eg. predicate for sort and most_frequent should in most cases correspond, but there are exceptions to this.
 
         Parameters
             first -
@@ -64,9 +65,9 @@
     TODO:
         - Return pair of most_frequent and number of occurrences
         - Add function for least_frequent
-        - Add parameter for using a predicate to compare elements
         
     ALTERNATIVE NAMES:
+        - appears_most +++
         - repeated ++
         - recurring +
         - most_common
@@ -80,8 +81,8 @@ namespace alg
 
   /*********************************************************************************/
 
-  template <typename Itr>
-  Itr most_frequent(Itr first, Itr last)
+  template <typename Itr, typename Predicate = std::equal_to<>>
+  Itr most_frequent(Itr first, Itr last, Predicate comp = {})
   {
     static_assert(std::is_base_of_v<std::forward_iterator_tag, typename std::iterator_traits<Itr>::iterator_category>, "most_frequent requires forward iterator");
     auto most_freq = first;
@@ -93,7 +94,7 @@ namespace alg
       Itr trailer = first;
       ++first;
 
-      for (; first != last && *first == *trailer; ++first, ++trailer, ++frequency) {}
+      for (; first != last && comp(*trailer, *first); ++first, ++trailer, ++frequency) {}
 
       if (frequency > largest_frequency)
       {
@@ -107,18 +108,18 @@ namespace alg
 
   /*********************************************************************************/
 
-  template <typename Collection>
-  typename Collection::const_iterator most_frequent(const Collection &c)
+  template <typename Collection, typename Predicate = std::equal_to<>>
+  typename Collection::const_iterator most_frequent(const Collection &c, Predicate comp = {})
   {
-    return most_frequent(c.cbegin(), c.cend());
+    return most_frequent(c.cbegin(), c.cend(), comp);
   }
 
   /*********************************************************************************/
 
-  template <typename Collection>
-  typename Collection::iterator most_frequent(Collection &c)
+  template <typename Collection, typename Predicate = std::equal_to<>>
+  typename Collection::iterator most_frequent(Collection &c, Predicate comp = {})
   {
-    return most_frequent(c.begin(), c.end());
+    return most_frequent(c.begin(), c.end(), comp);
   }
 
   /*********************************************************************************/
