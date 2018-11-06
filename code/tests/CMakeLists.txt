@@ -14,6 +14,7 @@ target_sources( tests
 		${ROOT_DIR}/algorithm/combination.hpp
 		${ROOT_DIR}/algorithm/remove_leading.hpp
 		${ROOT_DIR}/algorithm/frequent.hpp
+		${ROOT_DIR}/algorithm/gather.hpp
 )
 
 # SOURCE_FILES
@@ -22,6 +23,7 @@ target_sources( tests
 		${CMAKE_CURRENT_LIST_DIR}/algorithm/combination_test.cpp
 		${CMAKE_CURRENT_LIST_DIR}/algorithm/remove_leading_test.cpp
 		${CMAKE_CURRENT_LIST_DIR}/algorithm/frequent_test.cpp
+		${CMAKE_CURRENT_LIST_DIR}/algorithm/gather_test.cpp
 )
 
 target_include_directories( tests PRIVATE ${ROOT_DIR} )
