@@ -52,30 +52,27 @@
 */
 
 #include <algorithm>
-#include <functional>   // not_fn
+#include <functional>
 
 namespace alg
 {
 
-/*********************************************************************************/
+  /*********************************************************************************/
 
-/*
-    Implemented as seen from Sean Parent's talk
-    GoingNative 2013 C++ Seasoning
-    https://youtu.be/W2tWOdzgXHA
-*/
+  /*
+      Implemented as seen from Sean Parent's talk
+      GoingNative 2013 C++ Seasoning
+      https://youtu.be/W2tWOdzgXHA
+  */
 
-/* TODO:
-    Replace std::not1(p) with std::not_fn(p) for C++17
-*/
+  // Itr models BidirectionalIterator, Predicate models UnaryPredicate
+  template <typename Itr, typename Predicate>
+  auto gather(Itr first, Itr last, Itr loc, Predicate p) -> std::pair<Itr, Itr>
+  {
+    return { std::stable_partition(first, loc, std::not_fn(p)), 
+             std::stable_partition(loc, last, p) };
+  }
 
-template <typename Itr,         // Itr models BidirectionalIterator
-          typename Predicate>   // Predicate models UnaryPredicate
-auto gather(Itr first, Itr last, Itr loc, Predicate p) -> std::pair<Itr, Itr>
-{
-    return { std::stable_partition(first, loc, std::not1(p)), std::stable_partition(loc, last, p) };  // use std::not_fn(p) for C++17
-}
-
-/*********************************************************************************/
+  /*********************************************************************************/
 
 }
