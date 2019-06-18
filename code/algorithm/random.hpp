@@ -46,7 +46,7 @@
         Example
 
     TODO:
-        Create template functor
+       -  
     ALTERNATIVE NAMES:
 
 */
@@ -60,22 +60,33 @@ namespace alg
 
 struct Rng
 {
-	explicit Rng(int lowest, int highest) : lowest_(lowest), highest_(highest)
+	template<typename T>
+	explicit Rng(T lowest, T highest) : lowest_(lowest), highest_(highest)
 	{}
 
-	int operator()() const
+	template<typename T>
+	T operator()() const
 	{
-		static std::random_device rd;
+		static std::random_device rd;  // Used to obtain a seed
 		static std::mt19937 engine{ rd() };
-		static std::uniform_int_distribution<> distribution(lowest_, highest_);
-		return distribution(engine);
+		if constexpr (std::is_floating_point_v<T>)
+		{
+			static std::uniform_real_distribution<T> distribution(lowest_, highest_);
+			return distribution(engine);
+		}
+		else
+		{
+			static std::uniform_int_distribution<T> distribution(lowest_, highest_);
+			return distribution(engine);
+		}
 	}
 
 private:
-	const int lowest_;
-	const int highest_;
+	const T lowest_;
+	const T highest_;
 };
 
 /*********************************************************************************/
 
 }
+
