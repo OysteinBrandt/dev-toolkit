@@ -98,4 +98,16 @@ unsigned count_lower(const std::string& s)
 
 /*********************************************************************************/
 
+//TODO(obr): Check if one of the strings is a prefix of the other one.(Unordered)
+//           What the strings are used for should be explicit so that the caller can check for a certain prefix.
+//           Consider using std::mismatch
+bool is_prefix_of(const std::string& lhs, const std::string& rhs)
+{
+	return std::equal(
+		lhs.begin(), 
+		lhs.begin() + std::min(lhs.size(), rhs.size()),
+		rhs.begin() );
 }
+
+/*********************************************************************************/
+
