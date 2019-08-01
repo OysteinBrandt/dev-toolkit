@@ -111,3 +111,52 @@ bool is_prefix_of(const std::string& lhs, const std::string& rhs)
 
 /*********************************************************************************/
 
+namespace details
+{
+	template <typename InputIt>
+	std::string itr_to_str(InputIt itr)
+	{
+		if constexpr(std::is_same_v(
+			typename std::iterator_traits<Collection::iterator>::value_type,
+			std::string) )
+		{
+			return *itr;
+		}
+		else
+		{
+			std::ostringstream oss;
+			oss << *itr;
+			return oss.str();
+		}
+	}
+}
+
+/*********************************************************************************/
+
+// Expects that the elements in Collection can be outputtet with << operator
+template <typename Collection>
+std::string join(const Collection &c, const std::string& delimiter = " ")
+{
+	if (c.empty()) return {};
+
+	// If collection::type != std::string, call to_string ??
+	// or just rely on << operator ?? (is this bad for performance?)
+	// can we rely on classes having implemented a to_string free function?
+	// See: https://www.fluentcpp.com/2017/06/06/using-tostring-custom-types-cpp/
+
+	template <typename InputIt>
+	//auto merger = [&delimiter](std::string result, const typename std::iterator_traits<InputIt>::reference element)
+	auto merger = [&delimiter](std::string result, InputIt itr)
+	{
+		return std::move(result) + delimiter + details::itr_to_str(itr); // std::to_string(element);
+	};
+
+	return std::accumulate(
+			std::next(c.cbegin()), c.cend(),
+			//std::to_string(c[0]),
+			details::itr_to_str(c.cbegin()),
+			merger );
+}
+
+/*********************************************************************************/
+}
