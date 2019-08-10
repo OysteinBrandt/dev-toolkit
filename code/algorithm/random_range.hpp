@@ -63,7 +63,7 @@ template <typename T>
 std::vector<T> generate_random_numbers(unsigned int count, T lowest, T highest)
 {
 	std::vector<T> vec(count);
-	std::generate(vec.begin(), vec.end(), Rng(lowest, highest)());
+	std::generate(vec.begin(), vec.end(), Rng(lowest, highest));
 	return vec;
 }
 
